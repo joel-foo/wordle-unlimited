@@ -17,6 +17,11 @@
   --green-ans: rgb(86, 170, 37);
   --orange-ans: rgb(223, 187, 69);
   --window-height: calc(var(--vh,1vh)*100);
+  /* see end of file for calculation explanations */
+  --variable-grid-height: calc((var(--window-height) - 293px) / calc(357/52));
+  --variable-grid-width: calc((var(--window-height) - 293px) / calc(357/52));
+  --variable-grid-gap: calc((9/52) *  var(--variable-grid-height));
+  --variable-grid-margin: calc((9/52) *  var(--variable-grid-height));
 }
 
 body {
@@ -26,7 +31,6 @@ body {
 
 main {
   height: var(--window-height);
-  /* max-height: -webkit-fill-available; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -133,8 +137,8 @@ h1 {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(5, 54px);
-  grid-auto-rows: 54px;
+  grid-template-columns: repeat(5, 52px);
+  grid-auto-rows: 52px;
   gap: 9px;
   justify-content: center;
   margin-bottom: 9px;
@@ -323,7 +327,7 @@ h1 {
   margin: 0 3px 0.5rem 0;
   width: 5px;
   font-size: 0.8rem;
-  padding: 18px 18px;
+  padding: 18px 17px;
   text-transform: uppercase;
   cursor: pointer;
   z-index: 999;
@@ -336,7 +340,7 @@ h1 {
 }
 
 .special {
-  width: 43px;
+  width: 40px;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -355,19 +359,41 @@ h1 {
   .grid-container {
     grid-template-columns: repeat(5, 60px);
     grid-auto-rows: 60px;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-}
-
-@media only screen and (max-height: 650px) {
-  .grid-container {
-    grid-template-columns: repeat(5, calc((var(--window-height) - 290px) / 6));
-    grid-auto-rows: calc(((var(--window-height) - 290px) / 6));
-    gap: calc((var(--window-height) - 290px) / 36);
-    margin-bottom: calc((var(--window-height) - 290px) / 36);
+    gap: calc(9/52 * 60);
+    margin-bottom: calc(9/52 * 60);
   }
   .grid-container:last-child {
     margin-bottom: 0;
   }
 }
+
+
+
+@media only screen and (max-height: 650px) {
+  .grid-container {
+    grid-template-columns: repeat(5, var(--variable-grid-width));
+    grid-auto-rows: var(--variable-grid-height);
+    gap: var(--variable-grid-gap);
+    margin-bottom: var(--variable-grid-margin);
+  }
+  .grid-container:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/*
+calculations:
+
+1) 
+
+- under normal conditions: 52 px length and breadth - 9px gap and margin
+
+- ratio of l/b: g/m = 52 : 9
+
+2) at 650 height: grid = 357, keyboard + nav = 227, gap = 63
+
+to ensure keyboard + nav + gap don't change, grid needs to occupy rest of the space. i.e. current height - (227+63)
+
+3) ratio of entire grid l/b: individual grid l/b = 357:52
+
+*/

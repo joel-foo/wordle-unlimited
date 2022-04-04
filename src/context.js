@@ -181,8 +181,8 @@ const AppProvider = ({ children }) => {
     if (e) {
       e.preventDefault();
     }
-
-    if (e.key === 'Enter' || key === 'Enter') {
+    const inputKey = e.key || key;
+    if (inputKey === 'Enter') {
       let isValid = true;
       const { letters } = inputs;
       for (let i = 0; i < letters[row].length; i++) {
@@ -198,7 +198,7 @@ const AppProvider = ({ children }) => {
       } else {
         checkValid();
       }
-    } else if (e.key === 'Backspace' || key === 'Backspace') {
+    } else if (inputKey === 'Backspace') {
       let xCoordinate;
       for (let i = 0; i < 5; i++) {
         if (inputRef.current[i] === focusedElement) {
@@ -219,8 +219,7 @@ const AppProvider = ({ children }) => {
         }
       }
     } else {
-      const value = e.key || key;
-      const regMatch = value.length === 1 && /[a-zA-Z]/.test(value);
+      const regMatch = inputKey.length === 1 && /[a-zA-Z]/.test(inputKey);
 
       const count = inputs.letters[row].reduce((total, letter) => {
         if (letter.val) {
@@ -232,7 +231,7 @@ const AppProvider = ({ children }) => {
       if (regMatch && count < 5) {
         for (let i = 0; i < 5; i++) {
           if (inputRef.current[i] === focusedElement) {
-            editInputs(i + 1, value);
+            editInputs(i + 1, inputKey);
             if (i < 4) {
               inputRef.current[i + 1].focus();
             }
