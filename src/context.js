@@ -181,7 +181,7 @@ const AppProvider = ({ children }) => {
     if (e) {
       e.preventDefault();
     }
-    const inputKey = e.key || key;
+    const inputKey = e.key;
     if (inputKey === 'Enter') {
       let isValid = true;
       const { letters } = inputs;
