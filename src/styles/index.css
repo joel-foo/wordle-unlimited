@@ -20,7 +20,7 @@
   /* see end of file for calculation explanations */
   --variable-grid-height: calc((var(--window-height) - 293px) / calc(357/60));
   --variable-grid-width: calc((var(--window-height) - 293px) / calc(357/60));
-  --variable-grid-gap: calc((1/6) *  var(--variable-grid-height));
+  --variable-grid-gap: calc((1b/6) *  var(--variable-grid-height));
   --variable-grid-margin: calc((1/6) *  var(--variable-grid-height));
 }
 
