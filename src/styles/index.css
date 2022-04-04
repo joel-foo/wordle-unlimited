@@ -363,7 +363,7 @@ h1 {
     margin-bottom: calc(9/52 * 60);
   }
   .grid-container:last-child {
-    margin-bottom: 2;
+    margin-bottom: 0;
   }
 }
 
