@@ -178,6 +178,9 @@ const AppProvider = ({ children }) => {
 
   //Handles key press:
   const handleKeyPress = (e = '', key = '') => {
+    if (checkAns) {
+      return;
+    }
     if (e) {
       e.preventDefault();
     }
