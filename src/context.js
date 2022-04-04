@@ -184,7 +184,8 @@ const AppProvider = ({ children }) => {
     const inputKey = e.key || key;
     if (inputKey === 'Enter') {
       let isValid = true;
-      for (let i = 0; i < inputs.letters[row].length; i++) {
+      const { letters } = inputs;
+      for (let i = 0; i < letters[row].length; i++) {
         const { val } = letters[row][i];
         if (val === '') {
           isValid = false;

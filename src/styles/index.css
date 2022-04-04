@@ -18,10 +18,10 @@
   --orange-ans: rgb(223, 187, 69);
   --window-height: calc(var(--vh,1vh)*100);
   /* see end of file for calculation explanations */
-  --variable-grid-height: calc((var(--window-height) - 293px) / calc(357/52));
-  --variable-grid-width: calc((var(--window-height) - 293px) / calc(357/52));
-  --variable-grid-gap: calc((9/52) *  var(--variable-grid-height));
-  --variable-grid-margin: calc((9/52) *  var(--variable-grid-height));
+  --variable-grid-height: calc((var(--window-height) - 293px) / calc(357/60));
+  --variable-grid-width: calc((var(--window-height) - 293px) / calc(357/60));
+  --variable-grid-gap: calc((1/6) *  var(--variable-grid-height));
+  --variable-grid-margin: calc((1/6) *  var(--variable-grid-height));
 }
 
 body {
@@ -137,11 +137,11 @@ h1 {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(5, 52px);
-  grid-auto-rows: 52px;
-  gap: 9px;
+  grid-template-columns: repeat(5, 60px);
+  grid-auto-rows: 60px;
+  gap: 10px;
   justify-content: center;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 }
 
 .grid-container:last-child {
@@ -356,15 +356,6 @@ h1 {
     padding-left: 10px;
     padding-right: 10px;
   }
-  .grid-container {
-    grid-template-columns: repeat(5, 60px);
-    grid-auto-rows: 60px;
-    gap: calc(9/52 * 60);
-    margin-bottom: calc(9/52 * 60);
-  }
-  .grid-container:last-child {
-    margin-bottom: 0;
-  }
 }
 
 
@@ -386,14 +377,14 @@ calculations:
 
 1) 
 
-- under normal conditions: 52 px length and breadth - 9px gap and margin
+- under normal conditions: 60 px length and breadth - 10px gap and margin
 
-- ratio of l/b: g/m = 52 : 9
+- ratio of l/b: g/m = 6 : 1
 
-2) at 650 height: grid = 357, keyboard + nav = 227, gap = 63
+2) at 650 height: grid = 357, keyboard + nav = 227, gap = 66
 
-to ensure keyboard + nav + gap don't change, grid needs to occupy rest of the space. i.e. current height - (227+63)
+to ensure keyboard + nav + gap don't change, grid needs to occupy rest of the space. i.e. current height - (227+66=293)
 
-3) ratio of entire grid l/b: individual grid l/b = 357:52
+3) ratio of entire grid l/b: individual grid l/b = 357:60
 
 */
