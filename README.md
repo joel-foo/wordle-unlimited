@@ -1,6 +1,4 @@
-# WORDLE
-
-try as many times as you like.
+# WORDLE UNLIMITED: try as many times as you like.
 
 hosted on <https://wordle-merciless.netlify.app/>
 
