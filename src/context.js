@@ -351,9 +351,7 @@ const AppProvider = ({ children }) => {
         }, 300 + i * 300);
         if (i === 4 && row < 5) {
           setTimeout(() => {
-            if (!isGuessCorrect) {
-              setRow(row + 1);
-            }
+            setRow(row + 1);
             setCheckAns(false);
             //400 + 300*4 + 300(half duration of rotation)
           }, 1900);
@@ -362,16 +360,20 @@ const AppProvider = ({ children }) => {
     }
   }, [checkAns]);
 
+  const displayFinalMessage = (text) => {
+    const message = document.createElement('div');
+    message.className = 'modal';
+    message.textContent = text;
+    modalContainer.append(message);
+    document.querySelector('.restart-icon').classList.add('show');
+  };
+
   //display answer after 6 tries
   //shows option to restart
   useEffect(() => {
     if (guessCount === 6) {
       setTimeout(() => {
-        const message = document.createElement('div');
-        message.className = 'modal';
-        message.textContent = correctWord;
-        modalContainer.append(message);
-        document.querySelector('.restart-icon').classList.add('show');
+        displayFinalMessage(correctWord);
       }, 2100);
     }
   }, [guessCount]);
@@ -379,11 +381,7 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     if (isGuessCorrect) {
       setTimeout(() => {
-        const message = document.createElement('div');
-        message.className = 'modal';
-        message.textContent = 'SPLENDID';
-        modalContainer.append(message);
-        document.querySelector('.restart-icon').classList.add('show');
+        displayFinalMessage('SPLENDID');
       }, 2100);
     }
   }, [isGuessCorrect]);
