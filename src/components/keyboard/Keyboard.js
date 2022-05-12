@@ -19,7 +19,7 @@ const Keyboard = () => {
         for (let list of keysList) {
           for (let key of list) {
             let tempColor = '';
-            //compare each key with all input letters
+            //compare each key with all input letters to determine the most up-to-date / correct color
             for (let i = 0; i <= row; i++) {
               for (let j = 0; j < letters[i].length; j++) {
                 const { val, color } = letters[i][j];
