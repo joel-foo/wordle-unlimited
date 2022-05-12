@@ -40,7 +40,7 @@ const Row = ({ n }) => {
 
   //listens for inputs only if the guess is not correct
   useEffect(() => {
-    if (!isGuessCorrect) {
+    if (!isGuessCorrect | !checkAns) {
       if (n === row) {
         window.addEventListener('keydown', onInputPress);
         //cleanup function
