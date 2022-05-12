@@ -27,8 +27,7 @@ const AppProvider = ({ children }) => {
   //refers to 1vh
   const [viewHeight, setViewHeight] = useState(0.01 * window.innerHeight);
 
-  //Board State
-  const [inputs, setInputs] = useState({
+  const defaultInputs = {
     letters: [
       [
         { x: 1, val: '', color: '' },
@@ -73,7 +72,10 @@ const AppProvider = ({ children }) => {
         { x: 5, val: '', color: '' },
       ],
     ],
-  });
+  };
+
+  //Board State
+  const [inputs, setInputs] = useState(defaultInputs);
 
   //inputRef will be a callback ref to enable access to multiple inputs within the row
   const inputRef = useRef([]);
@@ -101,9 +103,7 @@ const AppProvider = ({ children }) => {
     };
   });
 
-  //fetches 'word of the day'
-  useEffect(() => {
-    //handle promise
+  const getCorrectWord = () => {
     fetch(possibleRaw)
       .then((r) => r.text())
       .then((text) => {
@@ -111,6 +111,12 @@ const AppProvider = ({ children }) => {
           text.split('\n')[Math.floor(Math.random() * text.split('\n').length)];
         setCorrectWord(randomWord.toUpperCase());
       });
+  };
+
+  //fetches 'word of the day'
+  useEffect(() => {
+    getCorrectWord();
+    //handle promise
   }, []);
 
   //edits the grid as input letters are filled
@@ -335,12 +341,10 @@ const AppProvider = ({ children }) => {
         setTimeout(() => {
           rotateRef.current[i].className = 'box-inner rotate';
         }, 300 + i * 300);
-        if (i === 4) {
+        if (i === 4 && row < 5) {
           setTimeout(() => {
-            if (row < 5) {
-              setRow(row + 1);
-              setCheckAns(false);
-            }
+            setRow(row + 1);
+            setCheckAns(false);
             //400 + 300*4 + 300(half duration of rotation)
           }, 1900);
         }
@@ -349,6 +353,7 @@ const AppProvider = ({ children }) => {
   }, [checkAns]);
 
   //display answer after 6 tries
+  //shows option to restart
   useEffect(() => {
     if (guessCount === 6) {
       setTimeout(() => {
@@ -356,9 +361,21 @@ const AppProvider = ({ children }) => {
         message.className = 'modal';
         message.textContent = correctWord;
         modalContainer.append(message);
+        document.querySelector('.restart-icon').classList.add('show');
       }, 2100);
     }
   }, [guessCount]);
+
+  const handleRestartClick = () => {
+    getCorrectWord();
+    setRow(0);
+    setCheckAns(false);
+    setGuessCount(0);
+    setInputs(defaultInputs);
+    document.querySelector('.restart-icon').classList.remove('show');
+    modalContainer.innerHTML = '';
+    document.querySelectorAll('.key').forEach((el) => (el.className = 'key'));
+  };
 
   //handle how error messages are displayed in the modal. will not run on first render
   useEffect(() => {
@@ -369,6 +386,7 @@ const AppProvider = ({ children }) => {
           index++;
           setTimeout(() => {
             msg.classList.add('fade');
+            //remove only after 100ms once the fade animation completes
             setTimeout(() => {
               modalContainer.removeChild(msg);
             }, 100);
@@ -396,6 +414,7 @@ const AppProvider = ({ children }) => {
         iconModal,
         setIconModal,
         handleKeyPress,
+        handleRestartClick,
       }}
     >
       {children}
