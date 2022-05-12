@@ -3,8 +3,15 @@ import Box from './Box';
 import { useGlobalContext } from '../../context';
 
 const Row = ({ n }) => {
-  const { inputs, row, checkAns, inputRef, setFocusedElement, handleKeyPress } =
-    useGlobalContext();
+  const {
+    inputs,
+    row,
+    checkAns,
+    inputRef,
+    setFocusedElement,
+    handleKeyPress,
+    isGuessCorrect,
+  } = useGlobalContext();
 
   //focus on 1st box of row in question
   useEffect(() => {
@@ -31,14 +38,16 @@ const Row = ({ n }) => {
     handleKeyPress(e, '');
   };
 
-  //listens for inputs
+  //listens for inputs only if the guess is not correct
   useEffect(() => {
-    if (n === row) {
-      window.addEventListener('keydown', onInputPress);
-      //cleanup function
-      return () => {
-        window.removeEventListener('keydown', onInputPress);
-      };
+    if (!isGuessCorrect) {
+      if (n === row) {
+        window.addEventListener('keydown', onInputPress);
+        //cleanup function
+        return () => {
+          window.removeEventListener('keydown', onInputPress);
+        };
+      }
     }
   });
 

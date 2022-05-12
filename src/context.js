@@ -77,6 +77,8 @@ const AppProvider = ({ children }) => {
   //Board State
   const [inputs, setInputs] = useState(defaultInputs);
 
+  const [isGuessCorrect, setIsGuessCorrect] = useState(false);
+
   //inputRef will be a callback ref to enable access to multiple inputs within the row
   const inputRef = useRef([]);
 
@@ -141,14 +143,17 @@ const AppProvider = ({ children }) => {
   //validates inputs upon submission
   const checkValid = () => {
     let wordIsValid = false;
-    const guess = inputs.letters[row].map((letter) => letter.val).join('');
+    const guess = inputs.letters[row]
+      .map((letter) => letter.val)
+      .join('')
+      .toLowerCase();
     // compare list of allowed words with guess
     fetch(allowedRaw)
       .then((r) => r.text())
       .then((text) => {
         const words = text.split('\n');
         for (let i = 0; i < words.length; i++) {
-          if (words[i] === guess.toLowerCase()) {
+          if (words[i] === guess) {
             wordIsValid = true;
             break;
           }
@@ -160,6 +165,9 @@ const AppProvider = ({ children }) => {
         } else {
           setCheckAns(true);
           setGuessCount(guessCount + 1);
+          if (guess === correctWord.toLowerCase()) {
+            setIsGuessCorrect(true);
+          }
         }
       });
   };
@@ -184,7 +192,7 @@ const AppProvider = ({ children }) => {
 
   //Handles key press:
   const handleKeyPress = (e = '', key = '') => {
-    if (checkAns) {
+    if (checkAns | isGuessCorrect) {
       return;
     }
     if (e) {
@@ -343,7 +351,9 @@ const AppProvider = ({ children }) => {
         }, 300 + i * 300);
         if (i === 4 && row < 5) {
           setTimeout(() => {
-            setRow(row + 1);
+            if (!isGuessCorrect) {
+              setRow(row + 1);
+            }
             setCheckAns(false);
             //400 + 300*4 + 300(half duration of rotation)
           }, 1900);
@@ -366,6 +376,18 @@ const AppProvider = ({ children }) => {
     }
   }, [guessCount]);
 
+  useEffect(() => {
+    if (isGuessCorrect) {
+      setTimeout(() => {
+        const message = document.createElement('div');
+        message.className = 'modal';
+        message.textContent = 'SPLENDID';
+        modalContainer.append(message);
+        document.querySelector('.restart-icon').classList.add('show');
+      }, 2100);
+    }
+  }, [isGuessCorrect]);
+
   const handleRestartClick = () => {
     getCorrectWord();
     setRow(0);
@@ -375,6 +397,7 @@ const AppProvider = ({ children }) => {
     document.querySelector('.restart-icon').classList.remove('show');
     modalContainer.innerHTML = '';
     document.querySelectorAll('.key').forEach((el) => (el.className = 'key'));
+    setIsGuessCorrect(false);
   };
 
   //handle how error messages are displayed in the modal. will not run on first render
@@ -415,6 +438,7 @@ const AppProvider = ({ children }) => {
         setIconModal,
         handleKeyPress,
         handleRestartClick,
+        isGuessCorrect,
       }}
     >
       {children}
