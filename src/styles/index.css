@@ -41,6 +41,7 @@ main {
   display: flex;
   align-items: center;
   height: 50px;
+  position: relative;
 }
 
 .nav-icon{
@@ -67,13 +68,15 @@ main {
   display: inline-block;
 }
 
-
-.left-section {
-  margin-left: 10px;
+.navbar h1{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%)
 }
 
+
 .right-section {
-  margin-right: 10px;
+  margin-left: auto
 }
 
 h1 {
